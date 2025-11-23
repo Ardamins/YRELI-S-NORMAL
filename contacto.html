@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto | YRELIS CoffeeBar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #4b2e16, #7b4a24, #3d2412);
+      background-attachment: fixed;
+      color: #fdf6ee;
+      animation: fadeIn 1.5s ease-in;
+      min-height: 100vh;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ------------------ MENÚ SUPERIOR HORIZONTAL DESLIZANTE ------------------ */
+    .menu-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 223, 178, 0.95);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      padding: 15px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .menu-top {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 15px;
+      padding: 0 15px;
+      min-width: max-content;
+    }
+
+    .menu-top a {
+      padding: 10px 20px;
+      font-weight: bold;
+      background: linear-gradient(145deg, #ffdfb2, #d6a35f);
+      color: #3a2d1b;
+      text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 0 10px #fff5e1;
+      transition: transform 0.3s, background 0.3s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .menu-top a:hover {
+      transform: scale(1.05);
+      background: linear-gradient(145deg, #fff1d6, #e6b97c);
+    }
+
+    .menu-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .menu-container::-webkit-scrollbar-track {
+      background: rgba(255, 223, 178, 0.5);
+    }
+
+    .menu-container::-webkit-scrollbar-thumb {
+      background: #d6a35f;
+      border-radius: 3px;
+    }
+
+    /* ------------------ HEADER ------------------ */
+    header {
+      background: linear-gradient(rgba(30,20,10,0.85), rgba(30,20,10,0.85)), 
+                  url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 100px 20px 40px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      margin-top: 70px;
+      animation: slideDown 1s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    header h1 {
+      font-size: 2.8em;
+      color: #ffddaa;
+      margin: 0;
+      text-shadow: 3px 3px 8px #000;
+    }
+
+    header p {
+      font-size: 1.2em;
+      color: #ffe9c7;
+      margin-top: 10px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ------------------ CONTENIDO PRINCIPAL ------------------ */
+    .contenido-principal {
+      max-width: 1200px;
+      margin: 40px auto 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 0 20px;
+    }
+
+    @media (max-width: 768px) {
+      .contenido-principal {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ------------------ INFORMACIÓN DE CONTACTO ------------------ */
+    .info-contacto {
+      background: rgba(40, 20, 10, 0.88);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+      animation: fadeInLeft 1s ease-out;
+    }
+
+    @keyframes fadeInLeft {
+      from { transform: translateX(-30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .info-contacto h2 {
+      color: #ffddaa;
+      font-size: 1.8em;
+      margin-bottom: 25px;
+      text-align: center;
+      position: relative;
+    }
+
+    .info-contacto h2::after {
+      content: '';
+      width: 60px;
+      height: 3px;
+      background: #ffddaa;
+      display: block;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    .contacto-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .contacto-item:hover {
+      transform: translateX(5px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .contacto-icono {
+      font-size: 1.5em;
+      color: #ffddaa;
+      margin-right: 15px;
+      width: 30px;
+      text-align: center;
+    }
+
+    .contacto-texto h3 {
+      color: #ffe9c7;
+      margin-bottom: 5px;
+      font-size: 1.1em;
+    }
+
+    .contacto-texto p, .contacto-texto a {
+      color: #fdf6ee;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contacto-texto a:hover {
+      color: #ffddaa;
+    }
+
+    /* ------------------ FORMULARIO DE CONTACTO ------------------ */
+    .formulario-contacto {
+      background: rgba(40, 20, 10, 0.88);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+      animation: fadeInRight 1s ease-out;
+    }
+
+    @keyframes fadeInRight {
+      from { transform: translateX(30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .formulario-contacto h2 {
+      color: #ffddaa;
+      font-size: 1.8em;
+      margin-bottom: 25px;
+      text-align: center;
+      position: relative;
+    }
+
+    .formulario-contacto h2::after {
+      content: '';
+      width: 60px;
+      height: 3px;
+      background: #ffddaa;
+      display: block;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ffe9c7;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fdf6ee;
+      font-size: 1em;
+      transition: border 0.3s, background 0.3s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #ffddaa;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn-enviar {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(145deg, #d6a35f, #a9743f);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-enviar:hover {
+      background: linear-gradient(145deg, #ffdfb2, #d6a35f);
+      transform: translateY(-3px);
+      color: #3a2d1b;
+    }
+
+    /* ------------------ MAPA ------------------ */
+    .mapa-container {
+      grid-column: 1 / -1;
+      background: rgba(40, 20, 10, 0.88);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+      margin-top: 20px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .mapa-container h2 {
+      color: #ffddaa;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .mapa-container h2::after {
+      content: '';
+      width: 60px;
+      height: 3px;
+      background: #ffddaa;
+      display: block;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    .mapa {
+      width: 100%;
+      height: 400px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .mapa iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ------------------ BOTÓN REGRESAR ------------------ */
+    .btn-regresar {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: linear-gradient(145deg, #d6a35f, #a9743f);
+      color: white;
+      font-weight: bold;
+      padding: 12px 18px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+      text-decoration: none;
+      transition: transform 0.3s, background 0.3s;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-regresar:hover {
+      background: linear-gradient(145deg, #ffdfb2, #d6a35f);
+      transform: scale(1.05);
+      color: #3a2d1b;
+    }
+
+    /* ------------------ WHATSAPP FLOTANTE ------------------ */
+    .wsp-flotante {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .wsp-flotante a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(145deg, #25D366, #128C7E);
+      border-radius: 50%;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .wsp-flotante a:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .wsp-flotante i {
+      font-size: 2em;
+      color: white;
+    }
+
+    /* ------------------ FOOTER ------------------ */
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: rgba(20, 10, 5, 0.85);
+      color: #c9b5a0;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ------------------ RESPONSIVE ------------------ */
+    @media (max-width: 768px) {
+      header {
+        padding: 90px 20px 30px;
+        margin-top: 80px;
+      }
+      
+      header h1 {
+        font-size: 2.2em;
+      }
+      
+      .contenido-principal {
+        margin: 30px 15px 60px;
+      }
+      
+      .info-contacto, .formulario-contacto {
+        padding: 25px 20px;
+      }
+      
+      .mapa {
+        height: 300px;
+      }
+      
+      .btn-regresar {
+        padding: 10px 15px;
+        font-size: 0.9em;
+      }
+      
+      .wsp-flotante a {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu-top {
+        gap: 10px;
+        padding: 0 15px;
+      }
+      
+      .menu-top a {
+        padding: 8px 16px;
+        font-size: 0.9em;
+      }
+      
+      header h1 {
+        font-size: 1.8em;
+      }
+      
+      .contacto-item {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Menú superior horizontal deslizante -->
+  <div class="menu-container">
+    <div class="menu-top">
+      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+      <a href="productos.html"><i class="fas fa-utensils"></i> Menú</a>
+      <a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a>
+      <a href="nosotros.html"><i class="fas fa-users"></i> Nosotros</a>
+      <a href="promociones.html"><i class="fas fa-percent"></i> Promociones</a>
+      
+    </div>
+  </div>
+
+  <!-- Cabecera -->
+  <header>
+    <h1>Contáctanos</h1>
+    <p>Estamos aquí para atenderte y hacer de tu experiencia algo inolvidable</p>
+  </header>
+
+  <!-- Contenido principal -->
+  <div class="contenido-principal">
+    <!-- Información de contacto -->
+    <div class="info-contacto">
+      <h2>📍 Información de Contacto</h2>
+      
+      <div class="contacto-item">
+        <div class="contacto-icono">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="contacto-texto">
+          <h3>Dirección</h3>
+          <p>Pasaje Gamarra N° 149, La Victoria - Lima</p>
+        </div>
+      </div>
+      
+      <div class="contacto-item">
+        <div class="contacto-icono">
+          <i class="fab fa-facebook"></i>
+        </div>
+        <div class="contacto-texto">
+          <h3>Facebook</h3>
+          <p><a href="https://www.facebook.com/yreliscoffeebar" target="_blank">YrelisCoffeeBar</a></p>
+        </div>
+      </div>
+      
+      <div class="contacto-item">
+        <div class="contacto-icono">
+          <i class="fab fa-tiktok"></i>
+        </div>
+        <div class="contacto-texto">
+          <h3>TikTok</h3>
+          <p><a href="https://www.tiktok.com/@yreliscoffeebar" target="_blank">@yreliscoffeebar</a></p>
+        </div>
+      </div>
+      
+      <div class="contacto-item">
+        <div class="contacto-icono">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <div class="contacto-texto">
+          <h3>WhatsApp</h3>
+          <p><a href="https://wa.me/51938168561" target="_blank">+51 938 168 561</a></p>
+        </div>
+      </div>
+      
+      <div class="contacto-item">
+        <div class="contacto-icono">
+          <i class="fas fa-truck"></i>
+        </div>
+        <div class="contacto-texto">
+          <h3>Delivery</h3>
+          <p>En todo Gamarra. Escríbenos por WhatsApp para enviarte tu pedido.</p>
+        </div>
+      </div>
+      
+      <div class="contacto-item">
+        <div class="contacto-icono">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="contacto-texto">
+          <h3>Horario de Atención</h3>
+          <p>Lunes a Sabado: 9:00 AM - 8:00 PM</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de contacto -->
+    <div class="formulario-contacto">
+      <h2>📝 Envíanos un Mensaje</h2>
+      <form id="formContacto">
+        <div class="form-group">
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" class="form-control" placeholder="Tu nombre" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" class="form-control" placeholder="tu@email.com" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="telefono">Teléfono (opcional)</label>
+          <input type="tel" id="telefono" class="form-control" placeholder="+51 XXX XXX XXX">
+        </div>
+        
+        <div class="form-group">
+          <label for="asunto">Asunto</label>
+          <input type="text" id="asunto" class="form-control" placeholder="Motivo de tu mensaje" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" class="form-control" placeholder="Escribe tu mensaje aquí..." required></textarea>
+        </div>
+        
+        <button type="submit" class="btn-enviar">
+          <i class="fas fa-paper-plane"></i> Enviar Mensaje
+        </button>
+      </form>
+    </div>
+
+    <!-- Mapa -->
+    <div class="mapa-container">
+      <h2>🗺️ Nuestra Ubicación</h2>
+      <div class="mapa">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.345282840091!2d-77.01824932477617!3d-12.056252942536968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c87120ff3cd7%3A0x7d2f3b1b7c9d1b1a!2sPasaje%20Gamarra%20149%2C%20La%20Victoria%2015001!5e0!3m2!1ses-419!2spe!4v1690834567890!5m2!1ses-419!2spe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón flotante de WhatsApp -->
+  <div class="wsp-flotante">
+    <a href="https://wa.me/51938168561?text=Hola%20Yrelis%20CoffeeBar%2C%20quiero%20hacer%20un%20pedido%20por%20delivery" target="_blank">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- Botón Regresar -->
+  <a href="index.html" class="btn-regresar">
+    <i class="fas fa-arrow-left"></i> Regresar
+  </a>
+
+  <!-- Pie de página -->
+  <footer>
+    &copy; 2025 Coffee Bar YRELIS. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('formContacto');
+      
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Simulación de envío de formulario
+        const nombre = document.getElementById('nombre').value;
+        alert(`¡Gracias ${nombre}! Tu mensaje ha sido enviado. Te contactaremos pronto.`);
+        
+        // Limpiar formulario
+        form.reset();
+      });
+    });
+  </script>
+
+</body>
+</html>

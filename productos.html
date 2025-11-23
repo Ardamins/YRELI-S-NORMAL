@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Productos | YRELIS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #fdf6ee;
+      background: linear-gradient(135deg, #4b2e16, #7b4a24, #3d2412);
+      background-attachment: fixed;
+      animation: pageFade 1.2s ease;
+    }
+
+    @keyframes pageFade {
+      from {opacity: 0;} 
+      to {opacity: 1;}
+    }
+
+    /* ------------------ MENÚ SUPERIOR HORIZONTAL DESLIZANTE ------------------ */
+    .menu-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 223, 178, 0.95);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      padding: 15px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch; /* Para scroll suave en iOS */
+    }
+
+    .menu-top {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 15px;
+      padding: 0 15px;
+      min-width: max-content; /* Asegura que el contenido no se comprima */
+    }
+
+    .menu-top a {
+      padding: 10px 20px;
+      font-weight: bold;
+      background: linear-gradient(145deg, #ffdfb2, #d6a35f);
+      color: #3a2d1b;
+      text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 0 10px #fff5e1;
+      transition: transform 0.3s, background 0.3s;
+      display: inline-block;
+      white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+      flex-shrink: 0; /* Evita que los botones se encojan */
+    }
+
+    .menu-top a:hover {
+      transform: scale(1.05);
+      background: linear-gradient(145deg, #fff1d6, #e6b97c);
+    }
+
+    /* Indicador de scroll para móviles */
+    .menu-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .menu-container::-webkit-scrollbar-track {
+      background: rgba(255, 223, 178, 0.5);
+    }
+
+    .menu-container::-webkit-scrollbar-thumb {
+      background: #d6a35f;
+      border-radius: 3px;
+    }
+
+    /* ------------------ CARRUSEL ENCABEZADO ------------------ */
+    .carrusel-header {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      margin-top: 80px; /* Aumentado para compensar el menú fijo */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    .carrusel-slides {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      transition: transform 0.8s ease;
+    }
+
+    .carrusel-slide {
+      width: 33.33%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .slide-1 {
+      background: linear-gradient(rgba(30,20,10,0.85), rgba(30,20,10,0.85)), 
+                  url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1350&q=80');
+    }
+
+    .slide-2 {
+      background: linear-gradient(rgba(30,20,10,0.85), rgba(30,20,10,0.85)), 
+                  url('https://images.unsplash.com/photo-1561047029-3000c68339ca?auto=format&fit=crop&w=1350&q=80');
+    }
+
+    .slide-3 {
+      background: linear-gradient(rgba(30,20,10,0.85), rgba(30,20,10,0.85)), 
+                  url('https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?auto=format&fit=crop&w=1350&q=80');
+    }
+
+    .carrusel-slide h1 {
+      font-size: 2.8em;
+      color: #ffddaa;
+      text-shadow: 3px 3px 8px #000;
+      margin-bottom: 10px;
+    }
+
+    .carrusel-slide h2 {
+      font-size: 1.2em;
+      color: #ffe9c7;
+      font-weight: 300;
+      max-width: 600px;
+    }
+
+    .carrusel-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .carrusel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .carrusel-dot.active {
+      background: #ffddaa;
+    }
+
+    /* ------------------ BOTÓN VOLVER ------------------ */
+    .btn-volver {
+      display: inline-block;
+      margin: 20px auto 0;
+      background: linear-gradient(145deg, #e7c8a0, #fff2d0);
+      color: #3a2d1b;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 0 8px #fff5e1;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+    }
+
+    .btn-volver:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 10px #fff8e0;
+      background: linear-gradient(145deg, #fff7e4, #eacda5);
+    }
+
+    /* ------------------ SECCIÓN PRODUCTOS ------------------ */
+    .productos {
+      max-width: 1100px;
+      margin: 40px auto 80px;
+      background: rgba(40,20,10,0.88);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+      animation: fadeInUp 1.2s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {transform: translateY(20px); opacity: 0;} 
+      to {transform: translateY(0); opacity: 1;}
+    }
+
+    .productos h2 {
+      font-size: 2.2em;
+      color: #ffe9c7;
+      text-align: center;
+      text-shadow: 2px 2px 5px #000;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .productos h2::after {
+      content: '';
+      width: 70px;
+      height: 4px;
+      background: #ffddaa;
+      display: block;
+      margin: 12px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ------------------ CATEGORÍAS ------------------ */
+    .categorias {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .categoria {
+      background: linear-gradient(145deg, #ffedcc, #d4a774);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      transition: all 0.4s ease;
+      opacity: 0;
+      animation: buttonFade 1s forwards;
+      transform-style: preserve-3d;
+    }
+
+    .categoria:nth-child(n) { 
+      animation-delay: calc(0.1s * var(--i)); 
+    }
+
+    @keyframes buttonFade {
+      from {opacity: 0; transform: translateY(20px) rotateY(10deg);} 
+      to {opacity: 1; transform: translateY(0) rotateY(0);}
+    }
+
+    .categoria:hover {
+      transform: translateY(-8px) rotateY(5deg);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.7);
+    }
+
+    .categoria-header {
+      background: linear-gradient(145deg, #8a633d, #b58854);
+      color: #fff3e1;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.3em;
+      font-weight: bold;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .categoria-body {
+      padding: 20px;
+    }
+
+    .categoria-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px dashed #b58854;
+      transition: all 0.3s ease;
+    }
+
+    .categoria-item:hover {
+      transform: translateX(5px);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      padding-left: 10px;
+    }
+
+    .categoria-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: #3a2d1b;
+    }
+
+    .item-price {
+      color: #8a633d;
+      font-weight: bold;
+    }
+
+    /* Estilos para las descripciones de productos */
+    .item-description {
+      font-size: 0.8em;
+      color: #5a4a32;
+      margin-top: 5px;
+      font-style: italic;
+      width: 100%;
+      display: block;
+    }
+
+    /* ------------------ BOTONES DE ACCIÓN ------------------ */
+    .acciones {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .btn-accion {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(145deg, #e7c8a0, #fff2d0);
+      color: #3a2d1b;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 0 8px #fff5e1;
+      transition: all 0.3s ease;
+    }
+
+    .btn-accion:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 10px #fff8e0;
+      background: linear-gradient(145deg, #fff7e4, #eacda5);
+    }
+
+    /* ------------------ WHATSAPP FLOTANTE ------------------ */
+    .wsp-flotante {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 2000;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .wsp-flotante a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(145deg, #25D366, #128C7E);
+      border-radius: 50%;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .wsp-flotante a:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .wsp-flotante i {
+      font-size: 2em;
+      color: white;
+    }
+
+    /* ------------------ FOOTER ------------------ */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(20,10,5,0.85);
+      color: #c9b5a0;
+      font-size: 0.9em;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* ------------------ RESPONSIVE ------------------ */
+    @media (max-width: 768px) {
+      .carrusel-header {
+        height: 250px;
+        margin-top: 90px; /* Ajustado para el menú móvil */
+      }
+      
+      .carrusel-slide h1 {
+        font-size: 2.2em;
+      }
+      
+      .productos {
+        margin: 30px 15px 60px;
+        padding: 25px 20px;
+      }
+      
+      .productos h2 {
+        font-size: 1.8em;
+      }
+      
+      .categorias {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn-volver {
+        display: block;
+        width: fit-content;
+        margin: 20px auto;
+      }
+      
+      .acciones {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .wsp-flotante {
+        bottom: 20px;
+        right: 20px;
+      }
+      
+      .wsp-flotante a {
+        width: 60px;
+        height: 60px;
+      }
+      
+      /* Menú móvil con scroll horizontal */
+      .menu-top {
+        gap: 12px;
+        padding: 0 20px;
+      }
+      
+      .menu-top a {
+        padding: 10px 18px;
+        font-size: 0.95em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .carrusel-slide h1 {
+        font-size: 1.8em;
+      }
+      
+      .categoria-header {
+        font-size: 1.1em;
+        padding: 12px;
+      }
+      
+      /* Menú móvil más compacto */
+      .menu-top {
+        gap: 10px;
+        padding: 0 15px;
+      }
+      
+      .menu-top a {
+        padding: 8px 16px;
+        font-size: 0.9em;
+      }
+    }
+
+    /* Para pantallas muy pequeñas */
+    @media (max-width: 360px) {
+      .menu-top a {
+        padding: 8px 14px;
+        font-size: 0.85em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Menú superior horizontal deslizante -->
+  <div class="menu-container">
+    <div class="menu-top">
+      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+      <a href="productos.html"><i class="fas fa-utensils"></i> Menú</a>
+      <a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a>
+      <a href="nosotros.html"><i class="fas fa-users"></i> Nosotros</a>
+      <a href="promociones.html"><i class="fas fa-percent"></i> Promociones</a>
+    </div>
+  </div>
+
+  <!-- Carrusel Encabezado -->
+  <div class="carrusel-header">
+    <div class="carrusel-slides">
+      <div class="carrusel-slide slide-1">
+        <h1>Productos YRELIS</h1>
+        <h2>Explora todo lo que tenemos para ti</h2>
+      </div>
+      <div class="carrusel-slide slide-2">
+        <h1>Café de Especialidad</h1>
+        <h2>Los mejores granos tostados a la perfección</h2>
+      </div>
+      <div class="carrusel-slide slide-3">
+        <h1>Delicias Únicas</h1>
+        <h2>Sabores que despiertan tus sentidos</h2>
+      </div>
+    </div>
+    <div class="carrusel-controls">
+      <div class="carrusel-dot active" data-slide="0"></div>
+      <div class="carrusel-dot" data-slide="1"></div>
+      <div class="carrusel-dot" data-slide="2"></div>
+    </div>
+  </div>
+
+  <!-- Botón Regresar -->
+  <div style="text-align:center;">
+    <a href="index.html" class="btn-volver"><i class="fas fa-arrow-left"></i> Regresar al Inicio</a>
+  </div>
+
+  <!-- Sección de productos -->
+  <div class="productos">
+    <h2>🍽️ Nuestro Menú</h2>
+    
+    <div class="categorias">
+      <!-- ALMUERZO CONFORTABLE -->
+      <div class="categoria" style="--i:1">
+        <div class="categoria-header">
+          <i class="fas fa-utensils"></i> ALMUERZO CONFORTABLE
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Fetuccini a la Huancaina</span>
+              <span class="item-description">Con chuleta o pechuga de pollo</span>
+            </div>
+            <span class="item-price">S/ 22.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Fetuccini a la Huancaina</span>
+              <span class="item-description">Con lomo saltado, churrasco o bisteck</span>
+            </div>
+            <span class="item-price">S/ 28.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Fetuccini al Pesto</span>
+              <span class="item-description">Con chuleta o pechuga de pollo</span>
+            </div>
+            <span class="item-price">S/ 22.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Fetuccini al Pesto</span>
+              <span class="item-description">Con lomo saltado, churrasco o bisteck</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Fetuccini a lo Alfredo</span>
+              <span class="item-description">Salsa bechamel - jamon, crema de leche - parmesano</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Arroz Chaufa</span>
+              <span class="item-description">Carne</span>
+            </div>
+            <span class="item-price">S/ 25.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Arroz Chaufa</span>
+              <span class="item-description">Pollo</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Lomo Saltado</span>
+              <span class="item-description">Con arroz y papas fritas</span>
+            </div>
+            <span class="item-price">S/ 28.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Pollo Saltado</span>
+              <span class="item-description">Con arroz y papas fritas</span>
+            </div>
+            <span class="item-price">S/ 25.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Cordón Blue</span>
+              <span class="item-description">Con arroz, papa dorada en salsa de champiñones</span>
+            </div>
+            <span class="item-price">S/ 25.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Bisteck a lo Pobre</span>
+              <span class="item-description">Con arroz, papas fritas, platano y huevo</span>
+            </div>
+            <span class="item-price">S/ 28.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Pollo a la Plancha al Grill</span>
+              <span class="item-description">Elige 2 guarniciones (ensalada cocida, ensalada fresca, arroz o papa coctel)</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIQUEO -->
+      <div class="categoria" style="--i:2">
+        <div class="categoria-header">
+          <i class="fas fa-utensils"></i> PIQUEO
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Tequeños de Queso</span>
+              <span class="item-description">Relleno con queso + salsa de guacamole</span>
+            </div>
+            <span class="item-price">S/ 18.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Chicharron de Pollo</span>
+              <span class="item-description">Marinados en salsa de casa + papas fritas y ensalada mixta</span>
+            </div>
+            <span class="item-price">S/ 22.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Salchipapa Yreli's</span>
+              <span class="item-description">Con papas fritas- chorizo- hotdog- pollo Deshilachado - Huevo frito acompañado de salsa de la casa</span>
+            </div>
+            <span class="item-price">S/ 22.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Alitas a la BBQ</span>
+              <span class="item-description">Marinadas en aderezo casero fritas y bañadas en salsa acevichada a base de limon, apio, culantro, ajo,kion y el toque de la casa, acompañadas de papas fritas</span>
+            </div>
+            <span class="item-price">S/ 22.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESAYUNOS -->
+      <div class="categoria" style="--i:3">
+        <div class="categoria-header">
+          <i class="fas fa-bacon"></i> DESAYUNOS
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Desayuno Americano</span>
+              <span class="item-description">Huevos revueltos-tostadas-cafe o jugo</span>
+            </div>
+            <span class="item-price">S/ 18.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Desayuno Continental</span>
+              <span class="item-description">Tostadas-huevo-tocino y panqueque</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Desayuno Yreli's</span>
+              <span class="item-description">Tostadas-platano-fresa-palta-huevo-cafe o jugo</span>
+            </div>
+            <span class="item-price">S/ 18.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Omellete + Leche</span>
+              <span class="item-description">Clasico: Huevo-jamon | Espinaca: Huevo-jamon-espinaca | Champiñones: huevo-champiñones-jamon</span>
+            </div>
+            <span class="item-price">S/ 18.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- JUGOS -->
+      <div class="categoria" style="--i:4">
+        <div class="categoria-header">
+          <i class="fas fa-glass-whiskey"></i> JUGOS
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Papaya</span>
+              <span class="item-description">Refrescante jugo natural</span>
+            </div>
+            <span class="item-price">S/ 7.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Piña</span>
+              <span class="item-description">Dulce y tropical</span>
+            </div>
+            <span class="item-price">S/ 7.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Fresa</span>
+              <span class="item-description">Delicioso y aromático</span>
+            </div>
+            <span class="item-price">S/ 8.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Mango</span>
+              <span class="item-description">Exótico y cremoso</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Naranja</span>
+              <span class="item-description">Natural y lleno de vitamina C</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Surtido</span>
+              <span class="item-description">Mezcla de frutas de temporada</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Maracumango</span>
+              <span class="item-description">Combinación tropical</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Especial</span>
+              <span class="item-description">Nuestra mezcla exclusiva</span>
+            </div>
+            <span class="item-price">S/ 12.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANTOJITOS -->
+      <div class="categoria" style="--i:5">
+        <div class="categoria-header">
+          <i class="fas fa-hamburger"></i> ANTOJITOS
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Sandwich Mixto</span>
+              <span class="item-description">Pan de molde - jamon-queso-edam</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Triples</span>
+              <span class="item-description">Clasico: pollo-durazno-palta</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Croissants</span>
+              <span class="item-description">Mixto: jamon-queso | Pollo: pollo-apio-pecanas-mayonesa</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Hamburguesa</span>
+              <span class="item-description">Carne: lechuga-tomate-cremas | Pollo: lechuga-tomate-cremas | +S/2.00 agregale: huevo o queso</span>
+            </div>
+            <span class="item-price">S/ 14.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Empanada</span>
+              <span class="item-description">Carne y pollo</span>
+            </div>
+            <span class="item-price">S/ 6.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Causa Rellena</span>
+              <span class="item-description">Pollo o atun</span>
+            </div>
+            <span class="item-price">S/ 15.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Choripan</span>
+              <span class="item-description">Tradicional y sabroso</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DULCES -->
+      <div class="categoria" style="--i:6">
+        <div class="categoria-header">
+          <i class="fas fa-cookie"></i> DULCES
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Keke de Platano</span>
+              <span class="item-description">Especialidad de la casa</span>
+            </div>
+            <span class="item-price">S/ 6.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Keke de Naranja</span>
+              <span class="item-description">Húmedo y aromático</span>
+            </div>
+            <span class="item-price">S/ 6.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Pancakes con Arandanos</span>
+              <span class="item-description">Esponjosos y deliciosos</span>
+            </div>
+            <span class="item-price">S/ 12.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFUSIONES CALIENTES -->
+      <div class="categoria" style="--i:7">
+        <div class="categoria-header">
+          <i class="fas fa-mug-hot"></i> INFUSIONES CALIENTES
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Manzanilla/Anis</span>
+              <span class="item-description">Relajante y digestiva</span>
+            </div>
+            <span class="item-price">S/ 3.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Hierba Luisa</span>
+              <span class="item-description">Aromática y calmante</span>
+            </div>
+            <span class="item-price">S/ 3.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Té Negro / Muña</span>
+              <span class="item-description">Energizante y digestivo</span>
+            </div>
+            <span class="item-price">S/ 3.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Té Verde</span>
+              <span class="item-description">Antioxidante y refrescante</span>
+            </div>
+            <span class="item-price">S/ 3.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Infusiones con Miel</span>
+              <span class="item-description">Endulzado naturalmente</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAFES -->
+      <div class="categoria" style="--i:8">
+        <div class="categoria-header">
+          <i class="fas fa-coffee"></i> CAFES
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Espresso</span>
+              <span class="item-description">Intenso y aromático</span>
+            </div>
+            <span class="item-price">S/ 3.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Americano</span>
+              <span class="item-description">Suave y equilibrado</span>
+            </div>
+            <span class="item-price">S/ 7.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Espresso Doble</span>
+              <span class="item-description">Doble intensidad</span>
+            </div>
+            <span class="item-price">S/ 8.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Capuccino</span>
+              <span class="item-description">Perfecto balance</span>
+            </div>
+            <span class="item-price">S/ 8.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Latte</span>
+              <span class="item-description">Cremoso y suave</span>
+            </div>
+            <span class="item-price">S/ 9.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Mocaccino</span>
+              <span class="item-description">Café con chocolate</span>
+            </div>
+            <span class="item-price">S/ 11.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Chocolate</span>
+              <span class="item-description">Clásico y reconfortante</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Chocolate</span>
+              <span class="item-description">Naranja y menta</span>
+            </div>
+            <span class="item-price">S/ 12.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FRAPPES -->
+      <div class="categoria" style="--i:9">
+        <div class="categoria-header">
+          <i class="fas fa-blender"></i> FRAPPES
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Mocka</span>
+              <span class="item-description">Delicioso y cremoso</span>
+            </div>
+            <span class="item-price">S/ 13.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Algarrobina</span>
+              <span class="item-description">Energético y nutritivo</span>
+            </div>
+            <span class="item-price">S/ 13.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Nutella</span>
+              <span class="item-description">Indulgente y cremoso</span>
+            </div>
+            <span class="item-price">S/ 15.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Clasica</span>
+              <span class="item-description">Nuestra versión tradicional</span>
+            </div>
+            <span class="item-price">S/ 13.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Oreo</span>
+              <span class="item-description">Irresistible combinación</span>
+            </div>
+            <span class="item-price">S/ 15.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- REFRESCANTE -->
+      <div class="categoria" style="--i:10">
+        <div class="categoria-header">
+          <i class="fas fa-glass-martini-alt"></i> REFRESCANTE
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Limonada Clasica</span>
+              <span class="item-description">Vaso</span>
+            </div>
+            <span class="item-price">S/ 8.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Limonada Clasica</span>
+              <span class="item-description">Jarra</span>
+            </div>
+            <span class="item-price">S/ 15.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Frutos Rojos</span>
+              <span class="item-description">Vaso</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Frutos Rojos</span>
+              <span class="item-description">Jarra</span>
+            </div>
+            <span class="item-price">S/ 19.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Jamaica con Maracuya</span>
+              <span class="item-description">Vaso</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Jamaica con Maracuya</span>
+              <span class="item-description">Jarra</span>
+            </div>
+            <span class="item-price">S/ 19.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Limonada Fresa o Arandano</span>
+              <span class="item-description">Vaso</span>
+            </div>
+            <span class="item-price">S/ 9.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Limonada Fresa o Arandano</span>
+              <span class="item-description">Jarra</span>
+            </div>
+            <span class="item-price">S/ 17.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Maracuya Clasica</span>
+              <span class="item-description">Vaso</span>
+            </div>
+            <span class="item-price">S/ 9.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Maracuya Clasica</span>
+              <span class="item-description">Jarra</span>
+            </div>
+            <span class="item-price">S/ 18.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Maracuya Frozen</span>
+              <span class="item-description">Vaso</span>
+            </div>
+            <span class="item-price">S/ 11.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Maracuya Frozen</span>
+              <span class="item-description">Jarra</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Sparkling Fresa / Maracuya</span>
+              <span class="item-description">Frutas naturales-hierba buena-limon y gaseosa blanca | Vaso</span>
+            </div>
+            <span class="item-price">S/ 8.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Sparkling Fresa / Maracuya</span>
+              <span class="item-description">Frutas naturales-hierba buena-limon y gaseosa blanca | Jarra</span>
+            </div>
+            <span class="item-price">S/ 15.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ICE COFFE -->
+      <div class="categoria" style="--i:11">
+        <div class="categoria-header">
+          <i class="fas fa-snowflake"></i> ICE COFFE
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Ice Caramel</span>
+              <span class="item-description">Dulce y refrescante</span>
+            </div>
+            <span class="item-price">S/ 14.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Ice Mocka</span>
+              <span class="item-description">Chocolate y café helado</span>
+            </div>
+            <span class="item-price">S/ 14.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Ice Capuccino</span>
+              <span class="item-description">Espumoso y frío</span>
+            </div>
+            <span class="item-price">S/ 12.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Ice Americano</span>
+              <span class="item-description">Simple y refrescante</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Ice Latte</span>
+              <span class="item-description">Cremoso y helado</span>
+            </div>
+            <span class="item-price">S/ 12.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Ice Matcha</span>
+              <span class="item-description">Energético y verde</span>
+            </div>
+            <span class="item-price">S/ 14.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Ice Latte Vainilla</span>
+              <span class="item-description">Aromático y dulce</span>
+            </div>
+            <span class="item-price">S/ 13.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CERVEZA Y GASEOSAS -->
+      <div class="categoria" style="--i:12">
+        <div class="categoria-header">
+          <i class="fas fa-beer"></i> CERVEZA Y GASEOSAS
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Pilsen</span>
+              <span class="item-description">Cerveza nacional</span>
+            </div>
+            <span class="item-price">S/ 7.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Corona</span>
+              <span class="item-description">Cerveza mexicana</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Heineken</span>
+              <span class="item-description">Cerveza holandesa</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Cusqueña</span>
+              <span class="item-description">Cerveza peruana</span>
+            </div>
+            <span class="item-price">S/ 10.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Coca Cola</span>
+              <span class="item-description">Refresco de cola</span>
+            </div>
+            <span class="item-price">S/ 3.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Inca Kola</span>
+              <span class="item-description">Refresco nacional</span>
+            </div>
+            <span class="item-price">S/ 3.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Sprite</span>
+              <span class="item-description">Refresco de lima-limón</span>
+            </div>
+            <span class="item-price">S/ 3.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEBIDAS HOT -->
+      <div class="categoria" style="--i:13">
+        <div class="categoria-header">
+          <i class="fas fa-fire"></i> BEBIDAS HOT
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Calientito #1</span>
+              <span class="item-description">Naranja + te negro</span>
+            </div>
+            <span class="item-price">S/ 17.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Calientito #2</span>
+              <span class="item-description">Maracuya y muña</span>
+            </div>
+            <span class="item-price">S/ 17.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Calientito #3</span>
+              <span class="item-description">Jengibre, limon y te negro</span>
+            </div>
+            <span class="item-price">S/ 17.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HAPPY HOUR -->
+      <div class="categoria" style="--i:14">
+        <div class="categoria-header">
+          <i class="fas fa-clock"></i> HAPPY HOUR
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Lunes a Jueves</span>
+              <span class="item-description">Solo cocteles clasicos</span>
+            </div>
+            <span class="item-price">S/ 30.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Viernes y Sabado</span>
+              <span class="item-description">Solo cocteles clasicos</span>
+            </div>
+            <span class="item-price">S/ 35.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOTS -->
+      <div class="categoria" style="--i:15">
+        <div class="categoria-header">
+          <i class="fas fa-glass-cheers"></i> SHOTS
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Tequila</span>
+              <span class="item-description">Shot tradicional</span>
+            </div>
+            <span class="item-price">S/ 15.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Pisco</span>
+              <span class="item-description">Shot nacional</span>
+            </div>
+            <span class="item-price">S/ 15.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COCTELERIA CLASICA -->
+      <div class="categoria" style="--i:16">
+        <div class="categoria-header">
+          <i class="fas fa-cocktail"></i> COCTELERIA CLASICA
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Pisco Sour</span>
+              <span class="item-description">Maracuya-fresa-clasica</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Mojitos</span>
+              <span class="item-description">Frutos rojos-maracuya-clasica</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Chilcanos</span>
+              <span class="item-description">Maracuya-hierba luisa-clasica</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Tequila Sunrise</span>
+              <span class="item-description">Colorido y refrescante</span>
+            </div>
+            <span class="item-price">S/ 25.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Piña Colada</span>
+              <span class="item-description">Tropical y cremoso</span>
+            </div>
+            <span class="item-price">S/ 25.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Daiquiri</span>
+              <span class="item-description">Fresa-mango-durazno</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COCTELERIA CAFE -->
+      <div class="categoria" style="--i:17">
+        <div class="categoria-header">
+          <i class="fas fa-coffee"></i> COCTELERIA CAFE
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Espresso Martini</span>
+              <span class="item-description">Energético y elegante</span>
+            </div>
+            <span class="item-price">S/ 22.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Coffe Tonic</span>
+              <span class="item-description">Refrescante y único</span>
+            </div>
+            <span class="item-price">S/ 20.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Coffe Sour</span>
+              <span class="item-description">Equilibrado y aromático</span>
+            </div>
+            <span class="item-price">S/ 18.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Irish Coffe</span>
+              <span class="item-description">Clásico y reconfortante</span>
+            </div>
+            <span class="item-price">S/ 17.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COCTELES DE TENDENCIA -->
+      <div class="categoria" style="--i:18">
+        <div class="categoria-header">
+          <i class="fas fa-star"></i> COCTELES DE TENDENCIA
+        </div>
+        <div class="categoria-body">
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Machu Picchu</span>
+              <span class="item-description">Inspirado en nuestra cultura</span>
+            </div>
+            <span class="item-price">S/ 28.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Sacsayhuaman</span>
+              <span class="item-description">Fuerte y memorable</span>
+            </div>
+            <span class="item-price">S/ 28.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Aperol Spritz</span>
+              <span class="item-description">Italiano y refrescante</span>
+            </div>
+            <span class="item-price">S/ 30.00</span>
+          </div>
+          <div class="categoria-item">
+            <div>
+              <span class="item-name">Blue Hawaii</span>
+              <span class="item-description">Tropical y vibrante</span>
+            </div>
+            <span class="item-price">S/ 28.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="acciones">
+      <a href="contacto.html" class="btn-accion">
+        <i class="fas fa-map-marker-alt"></i> Visítanos
+      </a>
+      <a href="promociones.html" class="btn-accion">
+        <i class="fas fa-clock"></i> Happy Hour
+      </a>
+    </div>
+  </div>
+
+  <!-- WhatsApp Flotante -->
+  <div class="wsp-flotante">
+    <a href="https://wa.me/51938168561" target="_blank">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- Pie de página -->
+  <footer>
+    &copy; 2025 Coffee Bar YRELIS. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configuración del carrusel
+      const carruselSlides = document.querySelector('.carrusel-slides');
+      const dots = document.querySelectorAll('.carrusel-dot');
+      let currentSlide = 0;
+      const totalSlides = 3;
+      
+      // Función para actualizar el carrusel
+      function updateCarrusel() {
+        carruselSlides.style.transform = `translateX(-${currentSlide * 33.33}%)`;
+        
+        // Actualizar puntos activos
+        dots.forEach((dot, index) => {
+          if (index === currentSlide) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+      }
+      
+      // Eventos para los puntos
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+          currentSlide = index;
+          updateCarrusel();
+        });
+      });
+      
+      // Cambio automático cada 5 segundos
+      setInterval(function() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateCarrusel();
+      }, 5000);
+    });
+  </script>
+
+</body>
+</html>

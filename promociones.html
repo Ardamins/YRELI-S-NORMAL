@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Promociones & Happy Hour | YRELIS CoffeeBar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #4b2e16, #7b4a24, #3d2412);
+      background-attachment: fixed;
+      color: #fdf6ee;
+      animation: fadeIn 1.5s ease-in;
+      min-height: 100vh;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ------------------ MENÚ SUPERIOR HORIZONTAL DESLIZANTE ------------------ */
+    .menu-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 223, 178, 0.95);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      padding: 15px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .menu-top {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 15px;
+      padding: 0 15px;
+      min-width: max-content;
+    }
+
+    .menu-top a {
+      padding: 10px 20px;
+      font-weight: bold;
+      background: linear-gradient(145deg, #ffdfb2, #d6a35f);
+      color: #3a2d1b;
+      text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 0 10px #fff5e1;
+      transition: transform 0.3s, background 0.3s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .menu-top a:hover {
+      transform: scale(1.05);
+      background: linear-gradient(145deg, #fff1d6, #e6b97c);
+    }
+
+    .menu-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .menu-container::-webkit-scrollbar-track {
+      background: rgba(255, 223, 178, 0.5);
+    }
+
+    .menu-container::-webkit-scrollbar-thumb {
+      background: #d6a35f;
+      border-radius: 3px;
+    }
+
+    /* ------------------ HEADER ------------------ */
+    header {
+      background: linear-gradient(rgba(30,20,10,0.85), rgba(30,20,10,0.85)), 
+                  url('https://images.unsplash.com/photo-1532634922-8fe0b757fb13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      padding: 100px 20px 50px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      margin-top: 70px;
+      animation: slideDown 1s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    header h1 {
+      font-size: 2.8em;
+      color: #ffddaa;
+      margin: 0;
+      text-shadow: 3px 3px 8px #000;
+    }
+
+    header p {
+      font-size: 1.2em;
+      color: #ffe9c7;
+      margin-top: 15px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ------------------ CONTENIDO PRINCIPAL ------------------ */
+    .contenido-principal {
+      max-width: 1200px;
+      margin: 40px auto 80px;
+      padding: 0 20px;
+    }
+
+    /* ------------------ SECCIONES ------------------ */
+    .seccion {
+      background: rgba(40, 20, 10, 0.88);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+      margin-bottom: 30px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .seccion h2 {
+      color: #ffddaa;
+      font-size: 2em;
+      margin-bottom: 25px;
+      text-align: center;
+      position: relative;
+    }
+
+    .seccion h2::after {
+      content: '';
+      width: 80px;
+      height: 3px;
+      background: #ffddaa;
+      display: block;
+      margin: 15px auto 0;
+      border-radius: 2px;
+    }
+
+    /* ------------------ HAPPY HOUR ------------------ */
+    .happy-hour-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .happy-hour-card {
+      background: linear-gradient(145deg, rgba(255, 215, 0, 0.15), rgba(255, 165, 0, 0.1));
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .happy-hour-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #ffd700, #ffa500, #ffd700);
+    }
+
+    .happy-hour-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+    }
+
+    .happy-hour-card h3 {
+      color: #ffd700;
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .precio {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #ffd700;
+      margin: 15px 0;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .horario {
+      color: #ffe9c7;
+      font-size: 1.1em;
+      margin-bottom: 15px;
+    }
+
+    .incluye {
+      color: #f3e1cd;
+      font-size: 0.95em;
+      font-style: italic;
+    }
+
+    /* ------------------ BOTÓN REGRESAR ------------------ */
+    .btn-regresar {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: linear-gradient(145deg, #d6a35f, #a9743f);
+      color: white;
+      font-weight: bold;
+      padding: 12px 18px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+      text-decoration: none;
+      transition: transform 0.3s, background 0.3s;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-regresar:hover {
+      background: linear-gradient(145deg, #ffdfb2, #d6a35f);
+      transform: scale(1.05);
+      color: #3a2d1b;
+    }
+
+    /* ------------------ WHATSAPP FLOTANTE ------------------ */
+    .wsp-flotante {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .wsp-flotante a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(145deg, #25D366, #128C7E);
+      border-radius: 50%;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .wsp-flotante a:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .wsp-flotante i {
+      font-size: 2em;
+      color: white;
+    }
+
+    /* ------------------ FOOTER ------------------ */
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: rgba(20, 10, 5, 0.85);
+      color: #c9b5a0;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ------------------ RESPONSIVE ------------------ */
+    @media (max-width: 768px) {
+      header {
+        padding: 90px 20px 30px;
+        margin-top: 80px;
+      }
+      
+      header h1 {
+        font-size: 2.2em;
+      }
+      
+      .contenido-principal {
+        margin: 30px 15px 60px;
+      }
+      
+      .seccion {
+        padding: 25px 20px;
+      }
+      
+      .seccion h2 {
+        font-size: 1.7em;
+      }
+      
+      .happy-hour-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn-regresar {
+        padding: 10px 15px;
+        font-size: 0.9em;
+      }
+      
+      .wsp-flotante a {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu-top {
+        gap: 10px;
+        padding: 0 15px;
+      }
+      
+      .menu-top a {
+        padding: 8px 16px;
+        font-size: 0.9em;
+      }
+      
+      header h1 {
+        font-size: 1.8em;
+      }
+      
+      .happy-hour-card {
+        padding: 20px;
+      }
+      
+      .precio {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Menú superior horizontal deslizante -->
+  <div class="menu-container">
+    <div class="menu-top">
+      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+      <a href="productos.html"><i class="fas fa-utensils"></i> Menú</a>
+      <a href="contacto.html"><i class="fas fa-envelope"></i> Contacto</a>
+      <a href="nosotros.html"><i class="fas fa-users"></i> Nosotros</a>
+      <a href="promociones.html"><i class="fas fa-percent"></i> Promociones</a>
+    </div>
+  </div>
+
+  <!-- Cabecera -->
+  <header>
+    <h1>Happy Hour YRELIS</h1>
+    <p>Disfruta de nuestros momentos especiales con promociones increíbles en bebidas y cócteles</p>
+  </header>
+
+  <!-- Contenido principal -->
+  <div class="contenido-principal">
+    <!-- Sección Happy Hour -->
+    <section class="seccion">
+      <h2>🎉 Happy Hour</h2>
+      <p style="text-align: center; margin-bottom: 25px; color: #ffe9c7; font-size: 1.1em;">
+        De lunes a domingo, disfruta de nuestras promociones especiales en bebidas y cócteles
+      </p>
+      
+      <div class="happy-hour-grid">
+        <div class="happy-hour-card">
+          <h3>Lunes a Jueves</h3>
+          <div class="precio">S/ 30</div>
+          <div class="horario">⏰ 9:00 AM - 8:00 PM</div>
+          <p class="incluye">Incluye 2 cervezas artesanales o 1 cóctel especial + snack de la casa</p>
+        </div>
+        
+        <div class="happy-hour-card">
+          <h3>Viernes y Sábado</h3>
+          <div class="precio">S/ 55</div>
+          <div class="horario">⏰ 9:00 AM - 8:00 PM</div>
+          <p class="incluye">Incluye 2 cócteles premium o 3 cervezas + tablas de picar</p>
+        </div>
+        
+    
+      </div>
+    </section>
+  </div>
+
+  <!-- Botón flotante de WhatsApp -->
+  <div class="wsp-flotante">
+    <a href="https://wa.me/51938168561?text=Hola%20Yrelis%20CoffeeBar%2C%20quiero%20saber%20más%20sobre%20su%20Happy%20Hour" target="_blank">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- Botón Regresar -->
+  <a href="index.html" class="btn-regresar">
+    <i class="fas fa-arrow-left"></i> Regresar
+  </a>
+
+  <!-- Pie de página -->
+  <footer>
+    &copy; 2025 Coffee Bar YRELIS. Todos los derechos reservados.
+  </footer>
+
+</body>
+</html>

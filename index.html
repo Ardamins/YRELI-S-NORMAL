@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>☕ Inicio | YRELIS</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #fdf6ee;
+      overflow-x: hidden;
+      animation: fadeIn 1.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ------------------ MENÚ SUPERIOR HORIZONTAL DESLIZANTE ------------------ */
+    .menu-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 223, 178, 0.95);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      padding: 12px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .menu-top {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 15px;
+      padding: 0 15px;
+      min-width: max-content;
+    }
+
+    .menu-top a {
+      padding: 10px 16px;
+      font-size: 1em;
+      font-weight: bold;
+      background: linear-gradient(145deg, #ffdfb2, #d6a35f);
+      color: #3a2d1b;
+      text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .menu-top a:hover { transform: scale(1.08); }
+
+    .menu-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .menu-container::-webkit-scrollbar-track {
+      background: rgba(255, 223, 178, 0.5);
+    }
+
+    .menu-container::-webkit-scrollbar-thumb {
+      background: #d6a35f;
+      border-radius: 3px;
+    }
+
+    /* ------------------ HEADER ------------------ */
+    header {
+      background: rgba(30, 20, 10, 0.9);
+      padding: 120px 20px 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    .logo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffe3b3;
+      box-shadow: 0 4px 10px #000;
+    }
+
+    header h1 {
+      font-size: 2.7em;
+      margin: 5px 0;
+      color: #ffddaa;
+      text-shadow: 3px 3px 8px #000;
+    }
+
+    header p {
+      font-size: 1.2em;
+      color: #ffe9c7;
+      text-shadow: 1px 1px 5px #000;
+    }
+
+    /* ------------------ CONTENIDO ------------------ */
+    .contenido {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: rgba(40, 20, 10, 0.85);
+      padding: 35px 20px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+    }
+
+    .contenido h2 {
+      font-size: 2.2em;
+      color: #ffe9c7;
+      text-shadow: 2px 2px 5px #000;
+    }
+
+    /* ------------------ TARJETA CLIENTE FRECUENTE ------------------ */
+    .tarjeta {
+      margin-top: 35px;
+      background: linear-gradient(145deg, #ffedcc, #d4a774);
+      padding: 25px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tarjeta h3 {
+      color: #3a2d1b;
+      font-size: 1.7em;
+      margin-bottom: 10px;
+    }
+
+    .tarjeta p { 
+      color: #000; 
+      font-weight: 600; 
+      margin-bottom: 20px;
+    }
+
+    .estampillas {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .estampilla {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: #fff3e1;
+      border: 2px dashed #b58854;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #8a633d;
+    }
+
+    .llena {
+      background: #8a633d;
+      color: white;
+      border: none;
+    }
+
+    /* ------------------ CARRUSEL ANUNCIOS TIPO TIKTOK ------------------ */
+    .carrusel-contenedor {
+      position: fixed;
+      top: 120px;
+      right: 15px;
+      width: 280px;
+      background: rgba(255,255,255,0.9);
+      border: 3px solid #d4a774;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      overflow: hidden;
+      z-index: 100;
+    }
+
+    .carrusel {
+      position: relative;
+      width: 100%;
+      height: 500px;
+    }
+
+    .carrusel-slides {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: transform 0.5s ease;
+    }
+
+    .carrusel-slide {
+      min-height: 100%;
+      width: 100%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
+
+    .carrusel-slide img,
+    .carrusel-slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carrusel-slide video {
+      background: #000;
+    }
+
+    .carrusel-controls {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+      transform: translateY(-50%);
+    }
+
+    .carrusel-btn {
+      background: rgba(212, 167, 116, 0.9);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .carrusel-btn:hover {
+      background: rgba(212, 167, 116, 1);
+      transform: scale(1.1);
+    }
+
+    .carrusel-indicators {
+      position: absolute;
+      bottom: 15px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 10px;
+    }
+
+    .carrusel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .carrusel-dot.active {
+      background: #ffddaa;
+      transform: scale(1.2);
+    }
+
+    /* ------------------ WHATSAPP FLOTANTE ------------------ */
+    .wsp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2000;
+    }
+
+    .wsp img {
+      width: 65px;
+      height: 65px;
+      cursor: pointer;
+      filter: drop-shadow(0 4px 6px black);
+      border-radius: 50%;
+      transition: transform .3s;
+    }
+
+    .wsp img:hover { transform: scale(1.1); }
+
+    /* ------------------ FOOTER ------------------ */
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: rgba(20, 10, 5, 0.85);
+      color: #c9b5a0;
+      font-size: 0.9em;
+      margin-top: 40px;
+    }
+
+    /* ------------------ RESPONSIVE ------------------ */
+    @media (max-width: 768px) {
+      .estampillas { grid-template-columns: repeat(4, 1fr); }
+      .estampilla { width: 45px; height: 45px; }
+      .tarjeta { width: 95%; }
+      .carrusel-contenedor { 
+        width: 90%;
+        max-width: 300px;
+        position: relative; 
+        margin: 20px auto; 
+        right: 0;
+        top: 0;
+      }
+      
+      .carrusel {
+        height: 450px;
+      }
+      
+      .menu-top {
+        gap: 12px;
+        padding: 0 20px;
+      }
+      
+      .menu-top a {
+        padding: 10px 16px;
+        font-size: 0.95em;
+      }
+      
+      header {
+        padding-top: 100px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .carrusel-contenedor {
+        width: 95%;
+        max-width: 280px;
+      }
+      
+      .carrusel {
+        height: 400px;
+      }
+      
+      .menu-top {
+        gap: 10px;
+        padding: 0 15px;
+      }
+      
+      .menu-top a {
+        padding: 8px 14px;
+        font-size: 0.9em;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .menu-top a {
+        padding: 8px 12px;
+        font-size: 0.85em;
+      }
+      
+      .carrusel-contenedor {
+        width: 95%;
+        max-width: 260px;
+      }
+      
+      .carrusel {
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MENÚ SUPERIOR HORIZONTAL DESLIZANTE -->
+  <div class="menu-container">
+    <div class="menu-top">
+      <a href="index.html">Inicio</a>
+      <a href="productos.html">Menú</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="promociones.html">Promociones</a>
+    </div>
+  </div>
+
+  <!-- ENCABEZADO -->
+  <header>
+    <img src="LOGOYRELIS.jpg" class="logo" alt="Logo Yrelis">
+    <h1>YRELIS CoffeeBar</h1>
+    <p>Pasión por el café y por los momentos inolvidables</p>
+  </header>
+
+  <!-- CONTENIDO -->
+  <div class="contenido">
+    <h2>Bienvenidos a YRELIS</h2>
+    <p>Disfruta bebidas únicas, buen ambiente y sabores que despiertan tus sentidos.</p>
+
+    <!-- TARJETA CLIENTE FRECUENTE -->
+    <div class="tarjeta">
+      <h3>☕ Tarjeta Cliente Frecuente</h3>
+      <p>Consume café 7 días y ¡te regalamos uno!</p>
+
+      <div class="estampillas">
+        <div class="estampilla llena">✓</div>
+        <div class="estampilla llena">✓</div>
+        <div class="estampilla llena">✓</div>
+        <div class="estampilla">4</div>
+        <div class="estampilla">5</div>
+        <div class="estampilla">6</div>
+        <div class="estampilla">7</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARRUSEL ANUNCIOS TIPO TIKTOK -->
+  <div class="carrusel-contenedor">
+    <div class="carrusel">
+      <div class="carrusel-slides">
+        <!-- Imagen 1 -->
+        <div class="carrusel-slide">
+          <img src="navidad.png" alt="Anuncio café">
+        </div>
+        <!-- Imagen 2 -->
+        <div class="carrusel-slide">
+          <img src="Gemini_Generated_Image_kdq0jgkdq0jgkdq0.png" alt="Café especial">
+        </div>
+        <!-- Video -->
+        <div class="carrusel-slide">
+          <video controls playsinline>
+            <source src="WhatsApp Video 2025-11-22 at 20.03.27.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento video.
+          </video>
+        </div>
+      </div>
+      <div class="carrusel-indicators">
+        <div class="carrusel-dot active" data-slide="0"></div>
+        <div class="carrusel-dot" data-slide="1"></div>
+        <div class="carrusel-dot" data-slide="2"></div>
+      </div>
+      <div class="carrusel-controls">
+        <button class="carrusel-btn prev">↑</button>
+        <button class="carrusel-btn next">↓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHATSAPP -->
+  <a class="wsp" href="https://wa.me/51938168561" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+  </a>
+
+  <footer>© 2025 YRELIS CoffeeBar</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configuración del carrusel
+      const carruselSlides = document.querySelector('.carrusel-slides');
+      const slides = document.querySelectorAll('.carrusel-slide');
+      const prevBtn = document.querySelector('.carrusel-btn.prev');
+      const nextBtn = document.querySelector('.carrusel-btn.next');
+      const dots = document.querySelectorAll('.carrusel-dot');
+      const videos = document.querySelectorAll('video');
+      
+      let currentSlide = 0;
+      const totalSlides = slides.length;
+      
+      // Función para pausar todos los videos
+      function pausarTodosLosVideos() {
+        videos.forEach(video => {
+          video.pause();
+        });
+      }
+      
+      // Función para actualizar la posición del carrusel
+      function updateCarrusel() {
+        carruselSlides.style.transform = `translateY(-${currentSlide * 100}%)`;
+        
+        // Pausar todos los videos al cambiar de slide
+        pausarTodosLosVideos();
+        
+        // Actualizar puntos activos
+        dots.forEach((dot, index) => {
+          if (index === currentSlide) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+      }
+      
+      // Evento para botón siguiente (flecha hacia abajo)
+      nextBtn.addEventListener('click', function() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateCarrusel();
+      });
+      
+      // Evento para botón anterior (flecha hacia arriba)
+      prevBtn.addEventListener('click', function() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateCarrusel();
+      });
+      
+      // Eventos para los puntos
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+          currentSlide = index;
+          updateCarrusel();
+        });
+      });
+      
+      // Pausar videos cuando se cambia de pestaña o ventana
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+          pausarTodosLosVideos();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
